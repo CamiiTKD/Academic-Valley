@@ -1,3 +1,5 @@
+using AcademicPlanner.Domain.Enums;
+
 namespace AcademicPlanner.Application.Features.Agenda.DTOs;
 
 public record HorarioMateriaDto(
@@ -10,7 +12,16 @@ public record HorarioMateriaDto(
     bool EsVirtual
 );
 
+public record AlertaEvaluacionDto(
+    Guid MateriaId,
+    string MateriaNombre,
+    TipoEvaluacion Tipo,
+    DateOnly Fecha,
+    string? Descripcion
+);
+
 public record DiaAgendaDto(
     DayOfWeek DiaSemana,
-    IReadOnlyList<HorarioMateriaDto> Horarios
+    IReadOnlyList<HorarioMateriaDto> Horarios,
+    IReadOnlyList<AlertaEvaluacionDto> Alertas
 );

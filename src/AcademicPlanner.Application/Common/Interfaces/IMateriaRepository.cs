@@ -10,6 +10,7 @@ public interface IMateriaRepository
     Task<IReadOnlyList<Materia>> GetAllWithCorrelativasAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetCursandoWithHorariosAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<Materia>> GetCursandoWithHorariosAndEvaluacionesAsync(CancellationToken ct = default);
     Task<bool> ExistsAsCorrelativaAsync(Guid materiaId, CancellationToken ct = default);
     Task AddAsync(Materia materia, CancellationToken ct = default);
     void Update(Materia materia);

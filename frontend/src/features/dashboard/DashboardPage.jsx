@@ -6,6 +6,7 @@ import CurrentCoursesCarousel from './components/CurrentCoursesCarousel';
 import MateriaDetailPanel from './components/MateriaDetailPanel';
 import NuevaMateriaModal from './components/NuevaMateriaModal';
 import CarteleraModal from './components/CarteleraModal';
+import AgendaModal from './components/AgendaModal';
 import CareerProgressBar from './components/CareerProgressBar';
 import './DashboardPage.css';
 
@@ -17,6 +18,7 @@ export default function DashboardPage() {
   const [selectedMateria, setSelectedMateria] = useState(null);
   const [showNuevaMateria, setShowNuevaMateria] = useState(false);
   const [showCartelera, setShowCartelera] = useState(false);
+  const [showAgenda, setShowAgenda] = useState(false);
   const [editingMateria, setEditingMateria] = useState(null);
 
   const fetchMaterias = useCallback(() => {
@@ -90,7 +92,7 @@ export default function DashboardPage() {
         label="Revisar Agenda"
         top="52%"
         left="82%"
-        onClick={() => {/* TODO: abrir vista de Agenda */}}
+        onClick={() => setShowAgenda(true)}
       />
 
       {/* Main content */}
@@ -115,6 +117,11 @@ export default function DashboardPage() {
           materia={selectedMateria}
           onClose={() => setSelectedMateria(null)}
         />
+      )}
+
+      {/* Agenda modal */}
+      {showAgenda && (
+        <AgendaModal onClose={() => setShowAgenda(false)} />
       )}
 
       {/* Cartelera modal */}

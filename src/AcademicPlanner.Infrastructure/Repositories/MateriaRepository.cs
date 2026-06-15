@@ -26,6 +26,14 @@ internal sealed class MateriaRepository(AcademicPlannerDbContext context) : IMat
             .Include(m => m.Horarios)
             .ToListAsync(ct);
 
+    public async Task<IReadOnlyList<Materia>> GetCursandoWithHorariosAndEvaluacionesAsync(CancellationToken ct = default)
+        => await context.Materias
+            .AsNoTracking()
+            .Where(m => m.Estado == EstadoMateria.Cursando)
+            .Include(m => m.Horarios)
+            .Include(m => m.Evaluaciones)
+            .ToListAsync(ct);
+
     public async Task<IReadOnlyList<Materia>> GetAllAsync(CancellationToken ct = default)
         => await context.Materias
             .AsNoTracking()
