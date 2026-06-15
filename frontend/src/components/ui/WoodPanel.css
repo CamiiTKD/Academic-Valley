@@ -1,0 +1,75 @@
+.wood-panel {
+  background: linear-gradient(
+    135deg,
+    var(--color-wood-mid) 0%,
+    var(--color-wood-dark) 25%,
+    var(--color-wood-mid) 50%,
+    var(--color-wood-dark) 75%,
+    var(--color-wood-mid) 100%
+  );
+  /* Pixel-art multi-layer border simulating carved wood */
+  box-shadow:
+    /* outer dark rim */
+    0 0 0 3px var(--color-wood-dark),
+    /* light highlight top-left */
+    inset 3px 3px 0 0 var(--color-wood-pale),
+    /* dark shadow bottom-right */
+    inset -3px -3px 0 0 #1a0a04,
+    /* outer drop shadow */
+    6px 6px 0 0 rgba(0,0,0,0.5);
+  border: 3px solid var(--color-wood-light);
+  border-radius: 2px;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+/* Corner nail dots */
+.wood-panel::before,
+.wood-panel::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent-gold);
+  border: 2px solid var(--color-wood-dark);
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.4);
+}
+
+.wood-panel::before {
+  top: 6px;
+  left: 6px;
+  box-shadow: 0 0 0 0 transparent,
+    /* second nail top-right */
+    calc(100% - 12px - 4px) 0 0 2px var(--color-wood-dark),
+    calc(100% - 12px - 4px) 0 0 0 var(--color-accent-gold);
+}
+
+.wood-panel::after {
+  bottom: 6px;
+  right: 6px;
+  box-shadow: 0 0 0 0 transparent,
+    calc(-100% + 12px + 4px) 0 0 2px var(--color-wood-dark),
+    calc(-100% + 12px + 4px) 0 0 0 var(--color-accent-gold);
+}
+
+/* Variant: darker/heavier panel */
+.wood-panel--heavy {
+  background: linear-gradient(
+    160deg,
+    #2a1508 0%,
+    var(--color-wood-dark) 40%,
+    #2a1508 100%
+  );
+}
+
+/* Variant: inner content area (parchment bg) */
+.wood-panel--parchment {
+  background: var(--color-parchment);
+  border-color: var(--color-parchment-border);
+  box-shadow:
+    0 0 0 3px var(--color-wood-dark),
+    inset 2px 2px 0 0 rgba(255,255,255,0.6),
+    inset -2px -2px 0 0 rgba(0,0,0,0.15),
+    6px 6px 0 0 rgba(0,0,0,0.5);
+}

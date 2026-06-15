@@ -1,0 +1,223 @@
+.carousel-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.carousel-label {
+  font-size: 1.5rem;
+  color: var(--color-text-light);
+  text-shadow: 2px 2px 0 var(--color-wood-dark), -1px -1px 0 rgba(0,0,0,0.5);
+  letter-spacing: 2px;
+}
+
+.carousel-track-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 8px 20px;
+  flex: 1;
+  scrollbar-width: none;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carousel-nav-btn {
+  background: var(--color-wood-mid);
+  border: 3px solid var(--color-wood-dark);
+  color: var(--color-accent-gold);
+  font-size: 1.8rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 var(--color-wood-dark);
+  flex-shrink: 0;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.carousel-nav-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-wood-dark);
+}
+.carousel-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+  box-shadow: 3px 3px 0 var(--color-wood-dark);
+}
+
+/* ── Materia card (hanging wooden plank) ── */
+.materia-card {
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transform-origin: top center;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  user-select: none;
+}
+
+.materia-card:hover {
+  transform: rotate(-2deg) translateY(-4px);
+  filter: brightness(1.1);
+}
+
+.materia-card:active {
+  transform: rotate(1deg) translateY(2px);
+}
+
+/* Hanging rope/string */
+.card-rope {
+  width: 3px;
+  height: 22px;
+  background: repeating-linear-gradient(
+    180deg,
+    #8a6040 0px,
+    #8a6040 3px,
+    #6a4020 3px,
+    #6a4020 6px
+  );
+  margin-bottom: -2px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 1px 0 0 rgba(0,0,0,0.3);
+}
+
+.card-rope::before,
+.card-rope::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 6px;
+  border-radius: 50% 50% 0 0;
+  background: var(--color-wood-dark);
+}
+.card-rope::before { left: -3px; }
+.card-rope::after  { right: -3px; }
+
+/* Wooden plank face */
+.card-plank {
+  background: linear-gradient(
+    160deg,
+    #c8925a 0%,
+    var(--color-wood-mid) 30%,
+    #4a2510 60%,
+    var(--color-wood-mid) 100%
+  );
+  border: 3px solid var(--color-wood-dark);
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.15),
+    inset -2px -2px 0 rgba(0,0,0,0.3),
+    4px 4px 0 rgba(0,0,0,0.5);
+  padding: 10px 12px 12px;
+  width: 100%;
+  position: relative;
+  border-radius: 1px;
+}
+
+/* Wood grain lines */
+.card-plank::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    4deg,
+    transparent 0px,
+    transparent 6px,
+    rgba(0,0,0,0.06) 6px,
+    rgba(0,0,0,0.06) 7px
+  );
+  pointer-events: none;
+}
+
+/* Nail holes on plank */
+.card-plank::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #1a0a04 40%, var(--color-wood-dark) 100%);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.card-nombre {
+  font-size: 1.2rem;
+  color: var(--color-text-light);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+  text-align: center;
+  line-height: 1.15;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+
+.card-codigo {
+  font-size: 1rem;
+  color: var(--color-accent-gold);
+  text-align: center;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+  letter-spacing: 1px;
+}
+
+.card-cuatrimestre {
+  font-size: 0.9rem;
+  color: var(--color-wood-pale);
+  text-align: center;
+  margin-top: 4px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+/* Selected / active state */
+.materia-card--active .card-plank {
+  background: linear-gradient(
+    160deg,
+    #e0a870 0%,
+    #8a4a20 30%,
+    #3a1808 60%,
+    #8a4a20 100%
+  );
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.2),
+    inset -2px -2px 0 rgba(0,0,0,0.4),
+    0 0 0 3px var(--color-accent-gold),
+    4px 4px 0 rgba(0,0,0,0.5);
+}
+
+.carousel-empty {
+  color: var(--color-text-light);
+  font-size: 1.3rem;
+  opacity: 0.7;
+  padding: 20px;
+  text-align: center;
+}
+
+.carousel-loading {
+  color: var(--color-accent-gold);
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 20px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0.3; } }

@@ -1,0 +1,65 @@
+# ─── .NET ────────────────────────────────────────────────────────────────────
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+TestResults/
+*.ncrunch*
+*.[Rr]esharper
+*.DotSettings.user
+
+# EF Core migrations snapshot backup
+*.bak
+
+# Published output
+publish/
+out/
+
+# ─── Node / Vite ─────────────────────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── Variables de entorno (pueden contener secretos) ─────────────────────────
+.env
+.env.local
+.env.*.local
+# .env.example sí se commitea (plantilla sin valores reales)
+
+# ─── Docker ──────────────────────────────────────────────────────────────────
+# Volúmenes y datos locales generados por docker-compose
+postgres-data/
+
+# ─── Sistema operativo ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Editores ────────────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*.sw?
+
+# ─── Base de Datos Local / EF Core ───────────────────────────────────────────
+# Por si usás alguna DB SQLite local para pruebas rápidas
+*.db
+*.db-shm
+*.db-wal
+
+# ─── Seguridad .NET (Secretos de Desarrollo) ─────────────────────────────────
+# Evita subir por error las credenciales que usamos para Docker (Host/Password)
+src/*/appsettings.Development.json
