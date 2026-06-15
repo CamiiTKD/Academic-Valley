@@ -8,6 +8,27 @@ async function get(path) {
   return res.json();
 }
 
+async function post(path, body) {
+  const res = await fetch(`${BASE}/api${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    // Forward validation errors from the backend when available
+    let msg = `Error ${res.status}`;
+    try {
+      const data = await res.json();
+      const details = data?.errors
+        ? Object.values(data.errors).flat().join(' ')
+        : data?.title ?? data?.message;
+      if (details) msg = details;
+    } catch { /* non-JSON body */ }
+    throw new Error(msg);
+  }
+  return res.json();
+}
+
 export async function getProgreso() {
   return get('/Progreso');
 }
@@ -26,4 +47,8 @@ export async function getHorarios(materiaId) {
 
 export async function getAgendaSemanal() {
   return get('/Agenda/semanal');
+}
+
+export async function crearMateria(body) {
+  return post('/Materias', body);
 }

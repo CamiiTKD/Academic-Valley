@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getMaterias, getProgreso } from '../../services/api';
 import WoodPanel from '../../components/ui/WoodPanel';
+import FarmElement from '../../components/ui/FarmElement';
 import CurrentCoursesCarousel from './components/CurrentCoursesCarousel';
 import MateriaDetailPanel from './components/MateriaDetailPanel';
+import NuevaMateriaModal from './components/NuevaMateriaModal';
+import CarteleraModal from './components/CarteleraModal';
 import CareerProgressBar from './components/CareerProgressBar';
 import './DashboardPage.css';
 
@@ -12,25 +15,33 @@ export default function DashboardPage() {
   const [loadingMaterias, setLoadingMaterias] = useState(true);
   const [loadingProgreso, setLoadingProgreso] = useState(true);
   const [selectedMateria, setSelectedMateria] = useState(null);
+  const [showNuevaMateria, setShowNuevaMateria] = useState(false);
+  const [showCartelera, setShowCartelera] = useState(false);
 
-  useEffect(() => {
+  const fetchMaterias = useCallback(() => {
+    setLoadingMaterias(true);
     getMaterias()
       .then(setMaterias)
       .catch(console.error)
       .finally(() => setLoadingMaterias(false));
+  }, []);
 
+  const fetchProgreso = useCallback(() => {
+    setLoadingProgreso(true);
     getProgreso()
       .then(setProgreso)
       .catch(console.error)
       .finally(() => setLoadingProgreso(false));
   }, []);
 
-  function handleSelectMateria(materia) {
-    setSelectedMateria(materia);
-  }
+  useEffect(() => {
+    fetchMaterias();
+    fetchProgreso();
+  }, [fetchMaterias, fetchProgreso]);
 
-  function handleCloseDetail() {
-    setSelectedMateria(null);
+  function handleMateriaCreada() {
+    fetchMaterias();
+    fetchProgreso();
   }
 
   const today = new Date().toLocaleDateString('es-AR', {
@@ -58,28 +69,67 @@ export default function DashboardPage() {
       {/* Grass strip */}
       <div className="dashboard-ground" />
 
+      {/* Farm elements — absolutely positioned over the grass */}
+      <FarmElement
+        spriteUrl="/sprites/log.svg"
+        label="Nueva Materia"
+        top="48%"
+        left="15%"
+        onClick={() => setShowNuevaMateria(true)}
+      />
+      <FarmElement
+        spriteUrl="/sprites/bulletin.svg"
+        label="Historial Académico"
+        top="70%"
+        left="6%"
+        onClick={() => setShowCartelera(true)}
+      />
+      <FarmElement
+        spriteUrl="/sprites/flower.svg"
+        label="Revisar Agenda"
+        top="52%"
+        left="82%"
+        onClick={() => {/* TODO: abrir vista de Agenda */}}
+      />
+
       {/* Main content */}
       <div className="dashboard-content">
         <div className="dashboard-header-sign">
           <span className="header-sign-date">{today}</span>
         </div>
 
-        {/* Carousel inside a wood panel */}
-        <WoodPanel style={{ width: '100%', maxWidth: '860px', padding: '16px 12px' }}>
+        <WoodPanel style={{ width: '100%', maxWidth: '860px', padding: '16px 12px', position: 'relative' }}>
           <CurrentCoursesCarousel
             materias={materias}
             loading={loadingMaterias}
             selectedId={selectedMateria?.id}
-            onSelect={handleSelectMateria}
+            onSelect={(m) => setSelectedMateria(m)}
           />
         </WoodPanel>
       </div>
 
-      {/* Materia detail panel (modal) */}
+      {/* Materia detail panel */}
       {selectedMateria && (
         <MateriaDetailPanel
           materia={selectedMateria}
-          onClose={handleCloseDetail}
+          onClose={() => setSelectedMateria(null)}
+        />
+      )}
+
+      {/* Cartelera modal */}
+      {showCartelera && (
+        <CarteleraModal
+          materias={materias}
+          loading={loadingMaterias}
+          onClose={() => setShowCartelera(false)}
+        />
+      )}
+
+      {/* Nueva materia modal */}
+      {showNuevaMateria && (
+        <NuevaMateriaModal
+          onClose={() => setShowNuevaMateria(false)}
+          onCreated={handleMateriaCreada}
         />
       )}
 

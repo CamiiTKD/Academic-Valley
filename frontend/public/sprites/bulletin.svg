@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Left post -->
+  <rect x="3" y="9"  width="2" height="7" fill="#3a1e08"/>
+  <rect x="3" y="9"  width="1" height="7" fill="#6b3a1f" opacity="0.45"/>
+  <!-- Right post -->
+  <rect x="11" y="9" width="2" height="7" fill="#3a1e08"/>
+  <rect x="11" y="9" width="1" height="7" fill="#6b3a1f" opacity="0.45"/>
+
+  <!-- Board face (warm tan wood) -->
+  <rect x="0" y="0" width="16" height="10" fill="#b86820"/>
+  <!-- Horizontal wood grain on face -->
+  <rect x="2" y="3" width="12" height="1" fill="rgba(0,0,0,0.10)"/>
+  <rect x="2" y="7" width="12" height="1" fill="rgba(0,0,0,0.10)"/>
+
+  <!-- Board outer frame (dark rails) -->
+  <rect x="0" y="0"  width="16" height="2"  fill="#6b3a1f"/>
+  <rect x="0" y="9"  width="16" height="2"  fill="#6b3a1f"/>
+  <rect x="0" y="0"  width="2"  height="11" fill="#6b3a1f"/>
+  <rect x="14" y="0" width="2"  height="11" fill="#6b3a1f"/>
+  <!-- Frame highlight (top-left bevel) -->
+  <rect x="0" y="0" width="16" height="1"  fill="#a06030" opacity="0.5"/>
+  <rect x="0" y="0" width="1"  height="11" fill="#a06030" opacity="0.5"/>
+
+  <!-- Corner tacks -->
+  <rect x="1" y="1"  width="2" height="2" fill="#f0c040"/>
+  <rect x="13" y="1" width="2" height="2" fill="#f0c040"/>
+  <rect x="1" y="8"  width="2" height="2" fill="#f0c040"/>
+  <rect x="13" y="8" width="2" height="2" fill="#f0c040"/>
+  <!-- Tack center shadows -->
+  <rect x="2" y="2"  width="1" height="1" fill="#c89010"/>
+  <rect x="14" y="2" width="1" height="1" fill="#c89010"/>
+  <rect x="2" y="9"  width="1" height="1" fill="#c89010"/>
+  <rect x="14" y="9" width="1" height="1" fill="#c89010"/>
+
+  <!-- Paper pinned on board -->
+  <rect x="3" y="2" width="10" height="7" fill="#fdf5e0"/>
+  <rect x="3" y="2" width="10" height="1" fill="#e8ddc0"/>
+
+  <!-- Text lines on paper -->
+  <rect x="4" y="3" width="8" height="1" fill="#3b2010"/>
+  <rect x="4" y="5" width="6" height="1" fill="#3b2010" opacity="0.7"/>
+  <rect x="4" y="7" width="7" height="1" fill="#3b2010" opacity="0.65"/>
+
+  <!-- Small pin on paper center-top -->
+  <rect x="7" y="2" width="2" height="1" fill="#f04040"/>
+</svg>

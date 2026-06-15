@@ -13,6 +13,9 @@ public sealed class CrearMateriaHandler(
     {
         var materia = Materia.Crear(request.Nombre, request.Codigo, request.Cuatrimestre);
 
+        if (request.EstadoInicial != Domain.Enums.EstadoMateria.Pendiente)
+            materia.ActualizarEstado(request.EstadoInicial, request.NotaFinal);
+
         if (request.CorrelativasIds is { Count: > 0 })
         {
             var correlativas = await materiaRepository.GetByIdsAsync(request.CorrelativasIds, cancellationToken);
