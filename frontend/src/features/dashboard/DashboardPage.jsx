@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const [selectedMateria, setSelectedMateria] = useState(null);
   const [showNuevaMateria, setShowNuevaMateria] = useState(false);
   const [showCartelera, setShowCartelera] = useState(false);
+  const [editingMateria, setEditingMateria] = useState(null);
 
   const fetchMaterias = useCallback(() => {
     setLoadingMaterias(true);
@@ -122,13 +123,15 @@ export default function DashboardPage() {
           materias={materias}
           loading={loadingMaterias}
           onClose={() => setShowCartelera(false)}
+          onEdit={(m) => setEditingMateria(m)}
         />
       )}
 
-      {/* Nueva materia modal */}
-      {showNuevaMateria && (
+      {/* Nueva materia / editar materia modal */}
+      {(showNuevaMateria || editingMateria) && (
         <NuevaMateriaModal
-          onClose={() => setShowNuevaMateria(false)}
+          materia={editingMateria}
+          onClose={() => { setShowNuevaMateria(false); setEditingMateria(null); }}
           onCreated={handleMateriaCreada}
         />
       )}

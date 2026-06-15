@@ -144,7 +144,7 @@
 .lista-cabecera,
 .materia-row {
   display: grid;
-  grid-template-columns: 1fr 110px 130px 70px;
+  grid-template-columns: 1fr 110px 130px 70px 38px;
   align-items: center;
   padding: 6px 14px;
   gap: 8px;
@@ -247,7 +247,32 @@
 }
 
 /* ─── Col alignment shortcuts ─────────────────────────── */
-.col-nombre { min-width: 0; }
-.col-codigo { text-align: center; }
-.col-estado { text-align: center; }
-.col-nota   { text-align: center; }
+.col-nombre   { min-width: 0; }
+.col-codigo   { text-align: center; }
+.col-estado   { text-align: center; }
+.col-nota     { text-align: center; }
+.col-acciones { text-align: center; }
+
+/* ─── Edit row button ─────────────────────────────────── */
+.edit-row-btn {
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  background: var(--color-wood-dark);
+  color: var(--color-accent-gold);
+  border: 2px solid var(--color-wood-mid);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 #000;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.1s, transform 0.08s, box-shadow 0.08s;
+}
+.edit-row-btn:hover {
+  opacity: 1;
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000;
+  background: #3a5010;
+}

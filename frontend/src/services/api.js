@@ -8,6 +8,27 @@ async function get(path) {
   return res.json();
 }
 
+async function put(path, body) {
+  const res = await fetch(`${BASE}/api${path}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    let msg = `Error ${res.status}`;
+    try {
+      const data = await res.json();
+      const details = data?.errors
+        ? Object.values(data.errors).flat().join(' ')
+        : data?.title ?? data?.message;
+      if (details) msg = details;
+    } catch { /* non-JSON body */ }
+    throw new Error(msg);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
 async function post(path, body) {
   const res = await fetch(`${BASE}/api${path}`, {
     method: 'POST',
@@ -51,4 +72,16 @@ export async function getAgendaSemanal() {
 
 export async function crearMateria(body) {
   return post('/Materias', body);
+}
+
+export async function actualizarMateria(id, body) {
+  return put(`/Materias/${id}`, body);
+}
+
+export async function agregarEvaluacion(materiaId, body) {
+  return post(`/Materias/${materiaId}/evaluaciones`, body);
+}
+
+export async function agregarHorario(materiaId, body) {
+  return post(`/Materias/${materiaId}/horarios`, body);
 }

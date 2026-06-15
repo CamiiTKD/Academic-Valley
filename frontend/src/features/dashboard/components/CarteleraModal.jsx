@@ -4,7 +4,7 @@ import './CarteleraModal.css';
 
 const FILTROS = ['Todas', 'Pendiente', 'Cursando', 'Regular', 'Aprobada'];
 
-export default function CarteleraModal({ materias, loading, onClose }) {
+export default function CarteleraModal({ materias, loading, onClose, onEdit }) {
   const [filtro, setFiltro] = useState('Todas');
 
   function handleOverlayClick(e) {
@@ -64,6 +64,7 @@ export default function CarteleraModal({ materias, loading, onClose }) {
                   <span className="col-codigo">Código</span>
                   <span className="col-estado">Estado</span>
                   <span className="col-nota">Nota</span>
+                  <span className="col-acciones" />
                 </div>
 
                 {lista.map((m, i) => (
@@ -80,6 +81,15 @@ export default function CarteleraModal({ materias, loading, onClose }) {
                     </span>
                     <span className="col-nota materia-nota">
                       {m.notaFinal != null ? m.notaFinal : '—'}
+                    </span>
+                    <span className="col-acciones">
+                      <button
+                        className="edit-row-btn"
+                        title="Editar materia"
+                        onClick={() => onEdit(m)}
+                      >
+                        ✏
+                      </button>
                     </span>
                   </div>
                 ))}

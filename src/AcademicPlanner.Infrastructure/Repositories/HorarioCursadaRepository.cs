@@ -10,6 +10,13 @@ internal sealed class HorarioCursadaRepository(AcademicPlannerDbContext context)
     public async Task<HorarioCursada?> GetByIdAsync(Guid id, CancellationToken ct = default)
         => await context.HorariosCursada.FirstOrDefaultAsync(h => h.Id == id, ct);
 
+    public async Task<IReadOnlyList<HorarioCursada>> GetByMateriaIdAsync(Guid materiaId, CancellationToken ct = default)
+        => await context.HorariosCursada
+            .Where(h => h.MateriaId == materiaId)
+            .OrderBy(h => h.DiaSemana)
+            .ThenBy(h => h.HoraInicio)
+            .ToListAsync(ct);
+
     public async Task AddAsync(HorarioCursada horario, CancellationToken ct = default)
         => await context.HorariosCursada.AddAsync(horario, ct);
 

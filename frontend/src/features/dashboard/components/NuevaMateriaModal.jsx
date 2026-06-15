@@ -1,14 +1,24 @@
 import { useState } from 'react';
-import { crearMateria } from '../../../services/api';
+import { crearMateria, actualizarMateria } from '../../../services/api';
 import WoodPanel from '../../../components/ui/WoodPanel';
 import './NuevaMateriaModal.css';
 
 const ESTADOS = ['Pendiente', 'Cursando', 'Regular', 'Aprobada'];
 
-const INITIAL = { nombre: '', codigo: '', cuatrimestre: '', estado: 'Pendiente', notaFinal: '' };
+function buildInitial(materia) {
+  if (!materia) return { nombre: '', codigo: '', cuatrimestre: '', estado: 'Pendiente', notaFinal: '' };
+  return {
+    nombre: materia.nombre,
+    codigo: materia.codigo,
+    cuatrimestre: String(materia.cuatrimestre),
+    estado: materia.estado,
+    notaFinal: materia.notaFinal != null ? String(materia.notaFinal) : '',
+  };
+}
 
-export default function NuevaMateriaModal({ onClose, onCreated }) {
-  const [fields, setFields] = useState(INITIAL);
+export default function NuevaMateriaModal({ onClose, onCreated, materia }) {
+  const isEditing = materia != null;
+  const [fields, setFields] = useState(() => buildInitial(materia));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -23,18 +33,24 @@ export default function NuevaMateriaModal({ onClose, onCreated }) {
     setLoading(true);
     setError(null);
 
+    const payload = {
+      nombre: fields.nombre.trim(),
+      codigo: fields.codigo.trim(),
+      cuatrimestre: Number(fields.cuatrimestre),
+      notaFinal: fields.estado === 'Aprobada' ? Number(fields.notaFinal) : null,
+    };
+
     try {
-      const materia = await crearMateria({
-        nombre: fields.nombre.trim(),
-        codigo: fields.codigo.trim(),
-        cuatrimestre: Number(fields.cuatrimestre),
-        estadoInicial: fields.estado,
-        notaFinal: fields.estado === 'Aprobada' ? Number(fields.notaFinal) : null,
-      });
-      onCreated(materia);
+      let dto;
+      if (isEditing) {
+        dto = await actualizarMateria(materia.id, { ...payload, id: materia.id, estado: fields.estado });
+      } else {
+        dto = await crearMateria({ ...payload, estadoInicial: fields.estado });
+      }
+      onCreated(dto);
       onClose();
     } catch (err) {
-      setError(err.message ?? 'Error al crear la materia.');
+      setError(err.message ?? 'Error al guardar la materia.');
     } finally {
       setLoading(false);
     }
@@ -59,7 +75,9 @@ export default function NuevaMateriaModal({ onClose, onCreated }) {
       <div className="nueva-materia-panel">
         <WoodPanel variant="heavy">
           <div className="modal-title-bar">
-            <span className="modal-title">⛏ Nueva Materia</span>
+            <span className="modal-title">
+              {isEditing ? '✏ Editar Materia' : '⛏ Nueva Materia'}
+            </span>
             <button className="modal-close-btn" onClick={onClose} disabled={loading}>
               ✕
             </button>
@@ -168,7 +186,9 @@ export default function NuevaMateriaModal({ onClose, onCreated }) {
               className={`form-submit-btn${loading ? ' form-submit-btn--loading' : ''}`}
               disabled={!canSubmit || loading}
             >
-              {loading ? 'Plantando' : '🌱 Plantar Materia'}
+              {loading
+                ? (isEditing ? 'Guardando' : 'Plantando')
+                : (isEditing ? '💾 Guardar Cambios' : '🌱 Plantar Materia')}
             </button>
           </form>
         </WoodPanel>

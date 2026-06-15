@@ -1,4 +1,5 @@
 using AcademicPlanner.Application.Features.Materias.Commands.ActualizarEstado;
+using AcademicPlanner.Application.Features.Materias.Commands.ActualizarMateria;
 using AcademicPlanner.Application.Features.Materias.Commands.CrearMateria;
 using AcademicPlanner.Application.Features.Materias.Commands.EliminarMateria;
 using AcademicPlanner.Application.Features.Materias.DTOs;
@@ -60,6 +61,39 @@ public class MateriasController(IMediator mediator) : ControllerBase
     {
         var dtos = await mediator.Send(new GetMateriasQuery(estado, cuatrimestre), ct);
         return Ok(dtos);
+    }
+
+    /// <summary>
+    /// Actualiza los datos de una materia existente (nombre, código, cuatrimestre, estado y nota).
+    /// </summary>
+    /// <param name="id">Id único de la materia a actualizar.</param>
+    /// <param name="command">Nuevos datos de la materia.</param>
+    /// <param name="ct">Token de cancelación.</param>
+    /// <returns>200 OK con el DTO actualizado.</returns>
+    /// <response code="200">Materia actualizada correctamente.</response>
+    /// <response code="400">Datos de validación inválidos o Id no coincide.</response>
+    /// <response code="404">Materia no encontrada.</response>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(MateriaDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Actualizar(
+        Guid id,
+        [FromBody] ActualizarMateriaCommand command,
+        CancellationToken ct)
+    {
+        if (id != command.Id)
+            return BadRequest("El Id en la URL no coincide con el Id en el cuerpo.");
+
+        try
+        {
+            var dto = await mediator.Send(command, ct);
+            return Ok(dto);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     /// <summary>

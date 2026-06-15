@@ -9,7 +9,7 @@ export default function CareerProgressBar({ progreso, loading }) {
     );
   }
 
-  const pct = progreso?.porcentajeAprobadas ?? 0;
+  const pct = progreso?.porcentajeProgreso ?? 0;
   const pctClamped = Math.min(100, Math.max(0, pct));
   const isLow = pctClamped < 20;
 

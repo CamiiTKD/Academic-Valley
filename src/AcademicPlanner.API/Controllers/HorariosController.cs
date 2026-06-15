@@ -2,6 +2,7 @@ using AcademicPlanner.Application.Features.Agenda.Commands.ActualizarHorario;
 using AcademicPlanner.Application.Features.Agenda.Commands.AgregarHorario;
 using AcademicPlanner.Application.Features.Agenda.Commands.EliminarHorario;
 using AcademicPlanner.Application.Features.Agenda.DTOs;
+using AcademicPlanner.Application.Features.Agenda.Queries.GetHorarios;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,30 @@ namespace AcademicPlanner.API.Controllers;
 [Produces("application/json")]
 public class HorariosController(IMediator mediator) : ControllerBase
 {
+    /// <summary>
+    /// Lista todos los horarios de cursada de la materia indicada.
+    /// </summary>
+    /// <param name="materiaId">Id de la materia.</param>
+    /// <param name="ct">Token de cancelación.</param>
+    /// <returns>200 OK con la lista de horarios.</returns>
+    /// <response code="200">Lista de horarios obtenida correctamente.</response>
+    /// <response code="404">Materia no encontrada.</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<HorarioCursadaDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Listar(Guid materiaId, CancellationToken ct)
+    {
+        try
+        {
+            var dtos = await mediator.Send(new GetHorariosQuery(materiaId), ct);
+            return Ok(dtos);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
     /// <summary>
     /// Agrega un horario de cursada a la materia indicada.
     /// </summary>

@@ -38,11 +38,23 @@ public class Materia : BaseEntity
         };
     }
 
+    public void Actualizar(string nombre, string codigo, int cuatrimestre)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(nombre);
+        ArgumentException.ThrowIfNullOrWhiteSpace(codigo);
+
+        if (cuatrimestre < 1)
+            throw new ArgumentOutOfRangeException(nameof(cuatrimestre), "El cuatrimestre debe ser mayor a 0.");
+
+        Nombre = nombre.Trim();
+        Codigo = codigo.Trim().ToUpperInvariant();
+        Cuatrimestre = cuatrimestre;
+    }
+
     public void ActualizarEstado(EstadoMateria nuevoEstado, decimal? nota = null)
     {
         Estado = nuevoEstado;
-        if (nota.HasValue)
-            NotaFinal = nota;
+        NotaFinal = nota;
     }
 
     public void AgregarCorrelativa(Materia correlativa)
