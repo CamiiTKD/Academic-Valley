@@ -63,3 +63,4 @@ desktop.ini
 # ─── Seguridad .NET (Secretos de Desarrollo) ─────────────────────────────────
 # Evita subir por error las credenciales que usamos para Docker (Host/Password)
 src/*/appsettings.Development.json
+src/*/appsettings.json
