@@ -5,6 +5,5 @@ namespace AcademicPlanner.Application.Features.Materias.Commands.ActualizarEstad
 
 public record ActualizarEstadoMateriaCommand(
     Guid MateriaId,
-    EstadoMateria NuevoEstado,
-    decimal? NotaFinal
+    EstadoMateria NuevoEstado
 ) : IRequest;

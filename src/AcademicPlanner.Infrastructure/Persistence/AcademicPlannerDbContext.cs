@@ -10,6 +10,7 @@ public class AcademicPlannerDbContext(DbContextOptions<AcademicPlannerDbContext>
     public DbSet<Materia> Materias => Set<Materia>();
     public DbSet<Evaluacion> Evaluaciones => Set<Evaluacion>();
     public DbSet<HorarioCursada> HorariosCursada => Set<HorarioCursada>();
+    public DbSet<RegistroNota> RegistrosNotas => Set<RegistroNota>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

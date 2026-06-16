@@ -4,6 +4,8 @@ using AcademicPlanner.Application.Features.Materias.Commands.CrearMateria;
 using AcademicPlanner.Application.Features.Materias.Commands.EliminarMateria;
 using AcademicPlanner.Application.Features.Materias.DTOs;
 using AcademicPlanner.Application.Features.Materias.Queries.GetMaterias;
+using AcademicPlanner.Application.Features.Notas.Commands.AgregarNota;
+using AcademicPlanner.Application.Features.Notas.DTOs;
 using AcademicPlanner.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -127,7 +129,40 @@ public class MateriasController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Actualiza el estado de una materia (ej: marcarla como Aprobada con su nota final).
+    /// Agrega una nueva nota al historial de una materia.
+    /// </summary>
+    /// <param name="id">Id único de la materia.</param>
+    /// <param name="command">Datos de la nota (valorNota, fecha, tipo).</param>
+    /// <param name="ct">Token de cancelación.</param>
+    /// <returns>201 Created con el DTO de la nota registrada.</returns>
+    /// <response code="201">Nota registrada correctamente.</response>
+    /// <response code="400">Datos de validación inválidos.</response>
+    /// <response code="404">Materia no encontrada.</response>
+    [HttpPost("{id:guid}/notas")]
+    [ProducesResponseType(typeof(RegistroNotaDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AgregarNota(
+        Guid id,
+        [FromBody] AgregarNotaCommand command,
+        CancellationToken ct)
+    {
+        if (id != command.MateriaId)
+            return BadRequest("El Id en la URL no coincide con el Id en el cuerpo.");
+
+        try
+        {
+            var dto = await mediator.Send(command, ct);
+            return CreatedAtAction(nameof(Listar), null, dto);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Actualiza el estado de una materia.
     /// </summary>
     /// <param name="id">Id único de la materia.</param>
     /// <param name="command">Datos para la actualización.</param>

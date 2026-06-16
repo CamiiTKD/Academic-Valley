@@ -9,6 +9,5 @@ public record ActualizarMateriaCommand(
     string Nombre,
     string Codigo,
     int Cuatrimestre,
-    EstadoMateria Estado,
-    decimal? NotaFinal
+    EstadoMateria Estado
 ) : IRequest<MateriaDto>;

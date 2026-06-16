@@ -23,8 +23,8 @@
 
 /* Sprite image */
 .farm-element__sprite {
-  width: 64px;
-  height: 64px;
+  width: 96px;
+  height: 96px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   display: block;
@@ -33,7 +33,7 @@
 /* Label below sprite */
 .farm-element__label {
   font-family: var(--font-pixel);
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   color: var(--color-text-light);
   text-shadow:
     1px 1px 0 rgba(0,0,0,0.9),
@@ -53,7 +53,7 @@
   background: var(--color-wood-dark);
   color: var(--color-accent-gold);
   font-family: var(--font-pixel);
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 4px 10px;
   border: 2px solid #000;
   white-space: nowrap;

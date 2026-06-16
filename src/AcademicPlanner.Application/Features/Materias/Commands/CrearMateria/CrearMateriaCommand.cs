@@ -9,6 +9,5 @@ public record CrearMateriaCommand(
     string Codigo,
     int Cuatrimestre,
     IReadOnlyList<Guid>? CorrelativasIds,
-    EstadoMateria EstadoInicial = EstadoMateria.Pendiente,
-    decimal? NotaFinal = null
+    EstadoMateria EstadoInicial = EstadoMateria.Pendiente
 ) : IRequest<MateriaDto>;

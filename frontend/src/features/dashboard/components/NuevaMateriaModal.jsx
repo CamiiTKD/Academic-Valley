@@ -6,13 +6,12 @@ import './NuevaMateriaModal.css';
 const ESTADOS = ['Pendiente', 'Cursando', 'Regular', 'Aprobada'];
 
 function buildInitial(materia) {
-  if (!materia) return { nombre: '', codigo: '', cuatrimestre: '', estado: 'Pendiente', notaFinal: '' };
+  if (!materia) return { nombre: '', codigo: '', cuatrimestre: '', estado: 'Pendiente' };
   return {
     nombre: materia.nombre,
     codigo: materia.codigo,
     cuatrimestre: String(materia.cuatrimestre),
     estado: materia.estado,
-    notaFinal: materia.notaFinal != null ? String(materia.notaFinal) : '',
   };
 }
 
@@ -37,7 +36,6 @@ export default function NuevaMateriaModal({ onClose, onCreated, materia }) {
       nombre: fields.nombre.trim(),
       codigo: fields.codigo.trim(),
       cuatrimestre: Number(fields.cuatrimestre),
-      notaFinal: fields.estado === 'Aprobada' ? Number(fields.notaFinal) : null,
     };
 
     try {
@@ -60,15 +58,10 @@ export default function NuevaMateriaModal({ onClose, onCreated, materia }) {
     if (e.target === e.currentTarget) onClose();
   }
 
-  const notaOk =
-    fields.estado !== 'Aprobada' ||
-    (Number(fields.notaFinal) >= 1 && Number(fields.notaFinal) <= 10);
-
   const canSubmit =
     fields.nombre.trim() &&
     fields.codigo.trim() &&
-    Number(fields.cuatrimestre) >= 1 &&
-    notaOk;
+    Number(fields.cuatrimestre) >= 1;
 
   return (
     <div className="nueva-materia-overlay" onClick={handleOverlayClick}>
@@ -157,26 +150,6 @@ export default function NuevaMateriaModal({ onClose, onCreated, materia }) {
                 </select>
               </div>
 
-              {fields.estado === 'Aprobada' && (
-                <div className="form-field">
-                  <label className="form-label" htmlFor="nm-nota">
-                    Nota Final (1–10)
-                  </label>
-                  <input
-                    id="nm-nota"
-                    className="form-input"
-                    name="notaFinal"
-                    type="number"
-                    placeholder="Ej: 8"
-                    min={1}
-                    max={10}
-                    step={0.5}
-                    value={fields.notaFinal}
-                    onChange={handleChange}
-                    disabled={loading}
-                  />
-                </div>
-              )}
             </div>
 
             {error && <p className="form-error">⚠ {error}</p>}

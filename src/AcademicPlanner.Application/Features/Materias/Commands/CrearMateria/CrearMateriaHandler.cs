@@ -1,6 +1,8 @@
 using AcademicPlanner.Application.Common.Interfaces;
 using AcademicPlanner.Application.Features.Materias.DTOs;
+using AcademicPlanner.Application.Features.Notas.DTOs;
 using AcademicPlanner.Domain.Entities;
+using AcademicPlanner.Domain.Enums;
 using MediatR;
 
 namespace AcademicPlanner.Application.Features.Materias.Commands.CrearMateria;
@@ -13,8 +15,8 @@ public sealed class CrearMateriaHandler(
     {
         var materia = Materia.Crear(request.Nombre, request.Codigo, request.Cuatrimestre);
 
-        if (request.EstadoInicial != Domain.Enums.EstadoMateria.Pendiente)
-            materia.ActualizarEstado(request.EstadoInicial, request.NotaFinal);
+        if (request.EstadoInicial != EstadoMateria.Pendiente)
+            materia.ActualizarEstado(request.EstadoInicial);
 
         if (request.CorrelativasIds is { Count: > 0 })
         {
@@ -40,12 +42,12 @@ public sealed class CrearMateriaHandler(
             materia.Nombre,
             materia.Codigo,
             materia.Cuatrimestre,
-            materia.NotaFinal,
             materia.Estado,
             materia.Correlativas
                 .Select(c => new CorrelativaResumenDto(c.Id, c.Nombre, c.Codigo, c.Estado))
                 .ToList()
-                .AsReadOnly()
+                .AsReadOnly(),
+            []
         );
     }
 }

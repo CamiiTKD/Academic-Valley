@@ -8,6 +8,8 @@ public interface IMateriaRepository
     Task<Materia?> GetByIdWithCorrelativasAsync(Guid id, CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetAllAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetAllWithCorrelativasAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<Materia>> GetAllWithCorrelativasAndNotasAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<Materia>> GetAllWithRegistroNotasAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetCursandoWithHorariosAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetCursandoWithHorariosAndEvaluacionesAsync(CancellationToken ct = default);

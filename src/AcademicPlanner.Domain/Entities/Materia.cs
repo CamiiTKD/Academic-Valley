@@ -8,7 +8,6 @@ public class Materia : BaseEntity
     public string Nombre { get; private set; } = string.Empty;
     public string Codigo { get; private set; } = string.Empty;
     public int Cuatrimestre { get; private set; }
-    public decimal? NotaFinal { get; private set; }
     public EstadoMateria Estado { get; private set; }
 
     // Self-referencing M:M — materias que se deben aprobar antes de cursar esta
@@ -17,6 +16,8 @@ public class Materia : BaseEntity
     public ICollection<Evaluacion> Evaluaciones { get; private set; } = [];
 
     public ICollection<HorarioCursada> Horarios { get; private set; } = [];
+
+    public ICollection<RegistroNota> RegistroNotas { get; private set; } = [];
 
     // Parameterless constructor required by EF Core
     protected Materia() { }
@@ -51,10 +52,16 @@ public class Materia : BaseEntity
         Cuatrimestre = cuatrimestre;
     }
 
-    public void ActualizarEstado(EstadoMateria nuevoEstado, decimal? nota = null)
+    public void ActualizarEstado(EstadoMateria nuevoEstado)
     {
         Estado = nuevoEstado;
-        NotaFinal = nota;
+    }
+
+    public RegistroNota AgregarNota(int valorNota, DateOnly fecha, TipoNota tipo)
+    {
+        var nota = RegistroNota.Crear(Id, valorNota, fecha, tipo);
+        RegistroNotas.Add(nota);
+        return nota;
     }
 
     public void AgregarCorrelativa(Materia correlativa)

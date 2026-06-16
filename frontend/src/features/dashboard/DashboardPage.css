@@ -11,7 +11,7 @@
 /* Sky at top */
 .dashboard-sky {
   width: 100%;
-  height: 120px;
+  height: 148px;
   background: linear-gradient(180deg, #4a90c8 0%, #87ceeb 60%, #b0e0f8 100%);
   position: relative;
   flex-shrink: 0;
@@ -54,7 +54,7 @@
 }
 
 .title-sign-text {
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   color: var(--color-text-light);
   text-shadow:
     2px 2px 0 var(--color-wood-dark),
@@ -99,24 +99,175 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px 100px; /* bottom padding for fixed progress bar */
-  gap: 16px;
+  padding: 16px 24px 150px; /* bottom padding for fixed progress bar */
+  gap: 12px;
   overflow: hidden;
+  position: relative;
+  z-index: 10; /* above deco-layer (3) but below farm-elements (15) */
 }
 
-/* Header sign with date */
-.dashboard-header-sign {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 860px;
-  padding: 6px 16px;
+/* ─── Date hanging plaque ─────────────────────────────── */
+.date-plaque-wrap {
+  position: relative;
+  display: inline-flex;
+  padding-top: 18px;
 }
 
-.header-sign-date {
-  font-size: 1.1rem;
+/* Left and right hanging ropes */
+.date-plaque-wrap::before,
+.date-plaque-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 18px;
+  background: repeating-linear-gradient(
+    180deg,
+    #8a6040 0px, #8a6040 3px,
+    #6a4020 3px, #6a4020 6px
+  );
+}
+.date-plaque-wrap::before { left: 36px; }
+.date-plaque-wrap::after  { right: 36px; }
+
+.date-plaque {
+  position: relative;
+  background: linear-gradient(
+    160deg,
+    #c8925a 0%,
+    var(--color-wood-mid) 28%,
+    #4a2510 58%,
+    var(--color-wood-mid) 100%
+  );
+  border: 3px solid var(--color-wood-dark);
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.12),
+    inset -2px -2px 0 rgba(0,0,0,0.3),
+    4px 5px 0 rgba(0,0,0,0.45);
+  padding: 9px 32px 11px;
+}
+
+/* Wood grain overlay */
+.date-plaque::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    4deg,
+    transparent 0px, transparent 7px,
+    rgba(0,0,0,0.045) 7px, rgba(0,0,0,0.045) 8px
+  );
+  pointer-events: none;
+}
+
+/* Nail at top-center */
+.date-plaque::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  background: radial-gradient(circle, #1a0a04 40%, #4a2810 100%);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.date-plaque__text {
+  position: relative;
+  z-index: 1;
+  font-size: 1.45rem;
   color: var(--color-text-light);
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
-  opacity: 0.85;
+  text-shadow:
+    1px 1px 0 rgba(0,0,0,0.85),
+    -1px -1px 0 rgba(0,0,0,0.4);
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+/* ─── Grass decoration layer ──────────────────────────── */
+.deco-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.deco {
+  position: absolute;
+  display: block;
+}
+
+/* Dark grass tuft — three blades via box-shadow */
+.deco-grass {
+  width: 4px;
+  height: 18px;
+  background: #1e5c08;
+  border-radius: 3px 3px 0 0;
+  box-shadow:
+     7px  4px 0 0 #286810,
+    -6px  6px 0 0 #347014,
+    14px  2px 0 0 #1e5c08,
+     2px  0   0 0 rgba(0,0,0,0.15);
+  image-rendering: pixelated;
+}
+
+/* Red wildflower */
+.deco-flower-r {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c82010;
+  box-shadow:
+    5px -3px 0 0 #e03828,
+    -5px -3px 0 0 #e03828,
+    0   10px 0 2px #2a6810;  /* stem */
+}
+
+/* Yellow wildflower */
+.deco-flower-y {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d4a818;
+  box-shadow:
+    5px -3px 0 0 #e8c030,
+    -5px -3px 0 0 #e8c030,
+    0   10px 0 2px #2a6810;
+}
+
+/* Purple wildflower */
+.deco-flower-p {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7020b0;
+  box-shadow:
+    5px -3px 0 0 #8830c8,
+    -5px -3px 0 0 #8830c8,
+    0   10px 0 2px #2a6810;
+}
+
+/* Regular pebble */
+.deco-stone {
+  width: 15px;
+  height: 10px;
+  border-radius: 8px 8px 5px 5px;
+  background: linear-gradient(180deg, #9a8e80 0%, #6a6058 100%);
+  box-shadow:
+    inset 2px 1px 0 rgba(255,255,255,0.25),
+    2px 3px 0 rgba(0,0,0,0.28);
+}
+
+/* Small pebble */
+.deco-stone-sm {
+  width: 9px;
+  height: 7px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #8a8078 0%, #585048 100%);
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,0.2),
+    1px 2px 0 rgba(0,0,0,0.22);
 }

@@ -1,5 +1,6 @@
 using AcademicPlanner.Application.Common.Interfaces;
 using AcademicPlanner.Application.Features.Materias.DTOs;
+using AcademicPlanner.Application.Features.Notas.DTOs;
 using MediatR;
 
 namespace AcademicPlanner.Application.Features.Materias.Queries.GetMaterias;
@@ -9,7 +10,7 @@ public sealed class GetMateriasHandler(IMateriaRepository materiaRepository)
 {
     public async Task<IReadOnlyList<MateriaDto>> Handle(GetMateriasQuery request, CancellationToken cancellationToken)
     {
-        var materias = await materiaRepository.GetAllWithCorrelativasAsync(cancellationToken);
+        var materias = await materiaRepository.GetAllWithCorrelativasAndNotasAsync(cancellationToken);
 
         var query = materias.AsEnumerable();
 
@@ -25,10 +26,14 @@ public sealed class GetMateriasHandler(IMateriaRepository materiaRepository)
                 m.Nombre,
                 m.Codigo,
                 m.Cuatrimestre,
-                m.NotaFinal,
                 m.Estado,
                 m.Correlativas
                     .Select(c => new CorrelativaResumenDto(c.Id, c.Nombre, c.Codigo, c.Estado))
+                    .ToList()
+                    .AsReadOnly(),
+                m.RegistroNotas
+                    .OrderBy(n => n.Fecha)
+                    .Select(n => new RegistroNotaDto(n.Id, n.ValorNota, n.Fecha, n.Tipo, n.ValorNota < 4))
                     .ToList()
                     .AsReadOnly()
             ))

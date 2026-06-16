@@ -25,9 +25,6 @@ internal sealed class MateriaConfiguration : IEntityTypeConfiguration<Materia>
         builder.Property(m => m.Cuatrimestre)
             .IsRequired();
 
-        builder.Property(m => m.NotaFinal)
-            .HasPrecision(4, 2);
-
         // Persiste el enum como string para legibilidad en la BD
         builder.Property(m => m.Estado)
             .HasConversion<string>()

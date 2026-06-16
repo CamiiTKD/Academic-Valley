@@ -7,7 +7,7 @@
 }
 
 .carousel-label {
-  font-size: 1.5rem;
+  font-size: 1.9rem;
   color: var(--color-text-light);
   text-shadow: 2px 2px 0 var(--color-wood-dark), -1px -1px 0 rgba(0,0,0,0.5);
   letter-spacing: 2px;
@@ -37,9 +37,9 @@
   background: var(--color-wood-mid);
   border: 3px solid var(--color-wood-dark);
   color: var(--color-accent-gold);
-  font-size: 1.8rem;
-  width: 40px;
-  height: 40px;
+  font-size: 2.2rem;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +62,7 @@
 .materia-card {
   scroll-snap-align: center;
   flex-shrink: 0;
-  width: 180px;
+  width: 224px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,7 +85,7 @@
 /* Hanging rope/string */
 .card-rope {
   width: 3px;
-  height: 22px;
+  height: 28px;
   background: repeating-linear-gradient(
     180deg,
     #8a6040 0px,
@@ -126,7 +126,7 @@
     inset 2px 2px 0 rgba(255,255,255,0.15),
     inset -2px -2px 0 rgba(0,0,0,0.3),
     4px 4px 0 rgba(0,0,0,0.5);
-  padding: 10px 12px 12px;
+  padding: 14px 16px 16px;
   width: 100%;
   position: relative;
   border-radius: 1px;
@@ -163,18 +163,18 @@
 }
 
 .card-nombre {
-  font-size: 1.2rem;
+  font-size: 1.45rem;
   color: var(--color-text-light);
   text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
   text-align: center;
   line-height: 1.15;
-  margin-top: 14px;
-  margin-bottom: 6px;
+  margin-top: 18px;
+  margin-bottom: 8px;
   word-break: break-word;
 }
 
 .card-codigo {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--color-accent-gold);
   text-align: center;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
@@ -182,7 +182,7 @@
 }
 
 .card-cuatrimestre {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--color-wood-pale);
   text-align: center;
   margin-top: 4px;

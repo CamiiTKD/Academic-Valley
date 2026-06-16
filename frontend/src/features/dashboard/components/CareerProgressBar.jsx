@@ -21,8 +21,8 @@ export default function CareerProgressBar({ progreso, loading }) {
       <div className="progress-label-row">
         <span className="progress-title">✦ Progreso de carrera</span>
         <div className="progress-averages">
-          <span className="progress-avg">Promedio: {promedioSin}</span>
-          <span className="progress-avg">Con aplazos: {promedioCon}</span>
+          <span className="progress-avg">Prom. s/aplazos: {promedioSin}</span>
+          <span className="progress-avg">Prom. c/aplazos: {promedioCon}</span>
         </div>
       </div>
 

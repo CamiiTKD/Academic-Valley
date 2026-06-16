@@ -17,6 +17,7 @@ internal sealed class MateriaRepository(AcademicPlannerDbContext context) : IMat
         => await context.Materias
             .Include(m => m.Correlativas)
             .Include(m => m.Evaluaciones)
+            .Include(m => m.RegistroNotas)
             .FirstOrDefaultAsync(m => m.Id == id, ct);
 
     public async Task<IReadOnlyList<Materia>> GetCursandoWithHorariosAsync(CancellationToken ct = default)
@@ -43,6 +44,19 @@ internal sealed class MateriaRepository(AcademicPlannerDbContext context) : IMat
         => await context.Materias
             .AsNoTracking()
             .Include(m => m.Correlativas)
+            .ToListAsync(ct);
+
+    public async Task<IReadOnlyList<Materia>> GetAllWithCorrelativasAndNotasAsync(CancellationToken ct = default)
+        => await context.Materias
+            .AsNoTracking()
+            .Include(m => m.Correlativas)
+            .Include(m => m.RegistroNotas)
+            .ToListAsync(ct);
+
+    public async Task<IReadOnlyList<Materia>> GetAllWithRegistroNotasAsync(CancellationToken ct = default)
+        => await context.Materias
+            .AsNoTracking()
+            .Include(m => m.RegistroNotas)
             .ToListAsync(ct);
 
     public async Task<IReadOnlyList<Materia>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default)

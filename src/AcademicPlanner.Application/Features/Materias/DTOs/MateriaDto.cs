@@ -1,3 +1,4 @@
+using AcademicPlanner.Application.Features.Notas.DTOs;
 using AcademicPlanner.Domain.Enums;
 
 namespace AcademicPlanner.Application.Features.Materias.DTOs;
@@ -7,9 +8,9 @@ public record MateriaDto(
     string Nombre,
     string Codigo,
     int Cuatrimestre,
-    decimal? NotaFinal,
     EstadoMateria Estado,
-    IReadOnlyList<CorrelativaResumenDto> Correlativas
+    IReadOnlyList<CorrelativaResumenDto> Correlativas,
+    IReadOnlyList<RegistroNotaDto> RegistroNotas
 );
 
 // Versión sin navegaciones anidadas para evitar ciclos en serialización JSON

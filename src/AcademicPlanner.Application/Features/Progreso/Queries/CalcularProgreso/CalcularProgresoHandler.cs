@@ -10,7 +10,7 @@ public sealed class CalcularProgresoHandler(IMateriaRepository materiaRepository
 {
     public async Task<ProgresoCarreraDto> Handle(CalcularProgresoQuery request, CancellationToken cancellationToken)
     {
-        var materias = await materiaRepository.GetAllAsync(cancellationToken);
+        var materias = await materiaRepository.GetAllWithRegistroNotasAsync(cancellationToken);
 
         if (materias.Count == 0)
             return ProgresoCarreraDto.Vacio();
@@ -19,24 +19,23 @@ public sealed class CalcularProgresoHandler(IMateriaRepository materiaRepository
 
         var porcentajeProgreso = Math.Round((decimal)aprobadas.Count / materias.Count * 100, 2);
 
-        // Con aplazos: promedio de TODAS las notas finales registradas (incluye reprobados)
-        var todasLasNotas = materias
-            .Where(m => m.NotaFinal.HasValue)
-            .Select(m => m.NotaFinal!.Value)
+        // Solo notas de tipo ExamenFinal participan en los promedios reglamentarios
+        var notasExamenFinal = materias
+            .SelectMany(m => m.RegistroNotas)
+            .Where(n => n.Tipo == TipoNota.ExamenFinal)
+            .Select(n => n.ValorNota)
             .ToList();
 
-        // Sin aplazos: promedio solo de materias aprobadas
-        var notasAprobadas = aprobadas
-            .Where(m => m.NotaFinal.HasValue)
-            .Select(m => m.NotaFinal!.Value)
-            .ToList();
-
-        var promedioConAplazos = todasLasNotas.Count > 0
-            ? Math.Round(todasLasNotas.Average(), 2)
+        // Con aplazos: todas las notas de ExamenFinal (incluyendo desaprobados < 4)
+        var promedioConAplazos = notasExamenFinal.Count > 0
+            ? Math.Round((decimal)notasExamenFinal.Average(), 2)
             : 0m;
 
+        // Sin aplazos: solo notas de ExamenFinal >= 4 (aprobadas)
+        var notasAprobadas = notasExamenFinal.Where(n => n >= 4).ToList();
+
         var promedioSinAplazos = notasAprobadas.Count > 0
-            ? Math.Round(notasAprobadas.Average(), 2)
+            ? Math.Round((decimal)notasAprobadas.Average(), 2)
             : 0m;
 
         return new ProgresoCarreraDto(

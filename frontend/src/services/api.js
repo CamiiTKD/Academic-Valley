@@ -85,3 +85,7 @@ export async function agregarEvaluacion(materiaId, body) {
 export async function agregarHorario(materiaId, body) {
   return post(`/Materias/${materiaId}/horarios`, body);
 }
+
+export async function agregarRegistroNota(materiaId, body) {
+  return post(`/Materias/${materiaId}/notas`, body);
+}

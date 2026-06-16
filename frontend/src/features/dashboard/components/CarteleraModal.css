@@ -144,7 +144,7 @@
 .lista-cabecera,
 .materia-row {
   display: grid;
-  grid-template-columns: 1fr 110px 130px 70px 38px;
+  grid-template-columns: 1fr 110px 130px 80px 38px;
   align-items: center;
   padding: 6px 14px;
   gap: 8px;
@@ -250,8 +250,33 @@
 .col-nombre   { min-width: 0; }
 .col-codigo   { text-align: center; }
 .col-estado   { text-align: center; }
-.col-nota     { text-align: center; }
+.col-notas    { text-align: center; }
 .col-acciones { text-align: center; }
+
+/* ─── Notes row button ────────────────────────────────── */
+.notas-row-btn {
+  font-family: var(--font-pixel);
+  font-size: 0.88rem;
+  background: var(--color-wood-dark);
+  color: var(--color-parchment);
+  border: 2px solid var(--color-wood-mid);
+  padding: 2px 7px 3px;
+  box-shadow: 2px 2px 0 #000;
+  cursor: pointer;
+  white-space: nowrap;
+  opacity: 0.75;
+  transition: opacity 0.1s, transform 0.08s, box-shadow 0.08s;
+}
+.notas-row-btn:hover {
+  opacity: 1;
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000;
+  background: var(--color-wood-mid);
+}
+.notas-row-btn--aplazo {
+  border-color: rgba(200, 48, 32, 0.6);
+  color: #ffaa90;
+}
 
 /* ─── Edit row button ─────────────────────────────────── */
 .edit-row-btn {

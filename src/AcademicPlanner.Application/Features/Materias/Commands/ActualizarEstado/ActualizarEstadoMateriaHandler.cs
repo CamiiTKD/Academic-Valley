@@ -12,7 +12,7 @@ internal sealed class ActualizarEstadoMateriaHandler(
         var materia = await materiaRepository.GetByIdAsync(request.MateriaId, cancellationToken)
             ?? throw new KeyNotFoundException($"Materia con Id '{request.MateriaId}' no encontrada.");
 
-        materia.ActualizarEstado(request.NuevoEstado, request.NotaFinal);
+        materia.ActualizarEstado(request.NuevoEstado);
         materiaRepository.Update(materia);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }

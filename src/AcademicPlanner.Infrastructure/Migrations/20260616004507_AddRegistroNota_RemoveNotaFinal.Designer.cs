@@ -3,6 +3,7 @@ using System;
 using AcademicPlanner.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademicPlanner.Infrastructure.Migrations
 {
     [DbContext(typeof(AcademicPlannerDbContext))]
-    partial class AcademicPlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260616004507_AddRegistroNota_RemoveNotaFinal")]
+    partial class AddRegistroNota_RemoveNotaFinal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
