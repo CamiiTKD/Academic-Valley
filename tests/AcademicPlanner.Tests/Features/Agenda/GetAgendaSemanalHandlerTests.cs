@@ -16,48 +16,51 @@ public sealed class GetAgendaSemanalHandlerTests
     public GetAgendaSemanalHandlerTests()
     {
         _sut = new GetAgendaSemanalHandler(_repository);
+        _repository.GetCursandoWithHorariosAndEvaluacionesAsync(Arg.Any<CancellationToken>())
+            .Returns(new List<Materia>().AsReadOnly() as IReadOnlyList<Materia>);
     }
 
     [Fact]
-    public async Task Handle_SinMateriasEnCursado_RetornaListaVacia()
+    public async Task Handle_Siempre_Retorna7DiasEnOrdenLunesDomingo()
     {
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(Array.Empty<Materia>().ToList().AsReadOnly());
-
         var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
 
-        result.Should().BeEmpty();
+        result.Should().HaveCount(7);
+        result[0].DiaSemana.Should().Be(DayOfWeek.Monday);
+        result[1].DiaSemana.Should().Be(DayOfWeek.Tuesday);
+        result[2].DiaSemana.Should().Be(DayOfWeek.Wednesday);
+        result[3].DiaSemana.Should().Be(DayOfWeek.Thursday);
+        result[4].DiaSemana.Should().Be(DayOfWeek.Friday);
+        result[5].DiaSemana.Should().Be(DayOfWeek.Saturday);
+        result[6].DiaSemana.Should().Be(DayOfWeek.Sunday);
     }
 
     [Fact]
-    public async Task Handle_MateriaCursandoSinHorarios_RetornaListaVacia()
+    public async Task Handle_SinMateriasEnCursado_Retorna7DiasConHorariosYAlertasVacios()
     {
-        var materia = CrearMateriaCursando("Algebra", "ALG1");
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(new List<Materia> { materia }.AsReadOnly());
-
         var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
 
-        result.Should().BeEmpty();
+        result.Should().HaveCount(7);
+        result.Should().AllSatisfy(d =>
+        {
+            d.Horarios.Should().BeEmpty();
+            d.Alertas.Should().BeEmpty();
+        });
     }
 
     [Fact]
-    public async Task Handle_UnaMateriaConUnHorario_RetornaDtoConDatosCorrectos()
+    public async Task Handle_UnaMateriaConHorarioElLunes_ApareceEnDiaLunes()
     {
         var materia = CrearMateriaCursando("Álgebra Lineal", "ALG1");
-        var horario = HorarioCursada.Crear(materia.Id, DayOfWeek.Monday, new TimeOnly(18, 30), new TimeOnly(21, 30), "Aula 5");
-        materia.Horarios.Add(horario);
-
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(new List<Materia> { materia }.AsReadOnly());
+        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Monday, new TimeOnly(18, 30), new TimeOnly(21, 30), "Aula 5"));
+        SetupMock([materia]);
 
         var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
 
-        result.Should().HaveCount(1);
-        result[0].DiaSemana.Should().Be(DayOfWeek.Monday);
-        result[0].Horarios.Should().HaveCount(1);
+        var lunes = result.Single(d => d.DiaSemana == DayOfWeek.Monday);
+        lunes.Horarios.Should().HaveCount(1);
 
-        var dto = result[0].Horarios[0];
+        var dto = lunes.Horarios[0];
         dto.MateriaId.Should().Be(materia.Id);
         dto.MateriaNombre.Should().Be("Álgebra Lineal");
         dto.MateriaCodigo.Should().Be("ALG1");
@@ -68,61 +71,34 @@ public sealed class GetAgendaSemanalHandlerTests
     }
 
     [Fact]
+    public async Task Handle_HorarioEnLunes_OtrosDiasQuedanVacios()
+    {
+        var materia = CrearMateriaCursando("Física", "FIS1");
+        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Monday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
+        SetupMock([materia]);
+
+        var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
+
+        result.Where(d => d.DiaSemana != DayOfWeek.Monday)
+              .Should().AllSatisfy(d => d.Horarios.Should().BeEmpty());
+    }
+
+    [Fact]
     public async Task Handle_MultipleHorariosMismoDia_OrdenaPorHoraInicio()
     {
         var materia = CrearMateriaCursando("Física", "FIS1");
         materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Wednesday, new TimeOnly(18, 0), new TimeOnly(20, 0)));
         materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Wednesday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
         materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Wednesday, new TimeOnly(14, 0), new TimeOnly(16, 0)));
-
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(new List<Materia> { materia }.AsReadOnly());
+        SetupMock([materia]);
 
         var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
 
-        result.Should().HaveCount(1);
-        var horarios = result[0].Horarios;
-        horarios[0].HoraInicio.Should().Be(new TimeOnly(9, 0));
-        horarios[1].HoraInicio.Should().Be(new TimeOnly(14, 0));
-        horarios[2].HoraInicio.Should().Be(new TimeOnly(18, 0));
-    }
-
-    [Fact]
-    public async Task Handle_HorariosEnDiferentesDias_OrdenaDeLunesAViernes()
-    {
-        var materia = CrearMateriaCursando("Química", "QUI1");
-        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Friday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
-        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Monday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
-        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Wednesday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
-
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(new List<Materia> { materia }.AsReadOnly());
-
-        var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
-
-        result.Should().HaveCount(3);
-        result[0].DiaSemana.Should().Be(DayOfWeek.Monday);
-        result[1].DiaSemana.Should().Be(DayOfWeek.Wednesday);
-        result[2].DiaSemana.Should().Be(DayOfWeek.Friday);
-    }
-
-    [Fact]
-    public async Task Handle_DomingoSeMuestraAlFinal()
-    {
-        var materia = CrearMateriaCursando("Historia", "HIS1");
-        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Sunday, new TimeOnly(10, 0), new TimeOnly(12, 0)));
-        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Saturday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
-        materia.Horarios.Add(HorarioCursada.Crear(materia.Id, DayOfWeek.Monday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
-
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(new List<Materia> { materia }.AsReadOnly());
-
-        var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
-
-        result.Should().HaveCount(3);
-        result[0].DiaSemana.Should().Be(DayOfWeek.Monday);
-        result[1].DiaSemana.Should().Be(DayOfWeek.Saturday);
-        result[2].DiaSemana.Should().Be(DayOfWeek.Sunday);
+        var miercoles = result.Single(d => d.DiaSemana == DayOfWeek.Wednesday);
+        miercoles.Horarios.Should().HaveCount(3);
+        miercoles.Horarios[0].HoraInicio.Should().Be(new TimeOnly(9, 0));
+        miercoles.Horarios[1].HoraInicio.Should().Be(new TimeOnly(14, 0));
+        miercoles.Horarios[2].HoraInicio.Should().Be(new TimeOnly(18, 0));
     }
 
     [Fact]
@@ -130,17 +106,12 @@ public sealed class GetAgendaSemanalHandlerTests
     {
         var mat1 = CrearMateriaCursando("Álgebra", "ALG1");
         var mat2 = CrearMateriaCursando("Física", "FIS1");
-
         mat1.Horarios.Add(HorarioCursada.Crear(mat1.Id, DayOfWeek.Monday, new TimeOnly(18, 0), new TimeOnly(21, 0)));
         mat1.Horarios.Add(HorarioCursada.Crear(mat1.Id, DayOfWeek.Thursday, new TimeOnly(14, 0), new TimeOnly(16, 0)));
         mat2.Horarios.Add(HorarioCursada.Crear(mat2.Id, DayOfWeek.Monday, new TimeOnly(9, 0), new TimeOnly(11, 0)));
-
-        _repository.GetCursandoWithHorariosAsync(Arg.Any<CancellationToken>())
-            .Returns(new List<Materia> { mat1, mat2 }.AsReadOnly());
+        SetupMock([mat1, mat2]);
 
         var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
-
-        result.Should().HaveCount(2);
 
         var lunes = result.Single(d => d.DiaSemana == DayOfWeek.Monday);
         lunes.Horarios.Should().HaveCount(2);
@@ -152,6 +123,42 @@ public sealed class GetAgendaSemanalHandlerTests
         var jueves = result.Single(d => d.DiaSemana == DayOfWeek.Thursday);
         jueves.Horarios.Should().HaveCount(1);
         jueves.Horarios[0].MateriaCodigo.Should().Be("ALG1");
+    }
+
+    [Fact]
+    public async Task Handle_EvaluacionDentroDeUnaSemanaDesdeHoy_ApareceComoAlerta()
+    {
+        var materia = CrearMateriaCursando("Química", "QUI1");
+        var mañana = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+        materia.Evaluaciones.Add(Evaluacion.Crear(materia.Id, TipoEvaluacion.Parcial, mañana, "Primer parcial"));
+        SetupMock([materia]);
+
+        var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
+
+        var diaConAlerta = result.Single(d => d.DiaSemana == mañana.DayOfWeek);
+        diaConAlerta.Alertas.Should().HaveCount(1);
+        diaConAlerta.Alertas[0].MateriaId.Should().Be(materia.Id);
+        diaConAlerta.Alertas[0].Tipo.Should().Be(TipoEvaluacion.Parcial);
+        diaConAlerta.Alertas[0].Descripcion.Should().Be("Primer parcial");
+    }
+
+    [Fact]
+    public async Task Handle_EvaluacionMasDeUnaSemanaDesdeHoy_NoApareceComoAlerta()
+    {
+        var materia = CrearMateriaCursando("Historia", "HIS1");
+        var lejano = DateOnly.FromDateTime(DateTime.Today.AddDays(8));
+        materia.Evaluaciones.Add(Evaluacion.Crear(materia.Id, TipoEvaluacion.Final, lejano));
+        SetupMock([materia]);
+
+        var result = await _sut.Handle(new GetAgendaSemanalQuery(), CancellationToken.None);
+
+        result.Should().AllSatisfy(d => d.Alertas.Should().BeEmpty());
+    }
+
+    private void SetupMock(IReadOnlyList<Materia> materias)
+    {
+        _repository.GetCursandoWithHorariosAndEvaluacionesAsync(Arg.Any<CancellationToken>())
+            .Returns(materias);
     }
 
     private static Materia CrearMateriaCursando(string nombre, string codigo)

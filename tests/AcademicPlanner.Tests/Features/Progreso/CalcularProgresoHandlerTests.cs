@@ -21,43 +21,38 @@ public sealed class CalcularProgresoHandlerTests
     [Fact]
     public async Task Handle_ConMateriasAprobadasYPendientes_CalculaProgresoCorrectamente()
     {
-        // Arrange: 3 aprobadas (notas 4, 7, 8) + 1 pendiente + 1 cursando
+        // 3 aprobadas (notas 4, 7, 8) + 1 pendiente + 1 cursando
         var materias = new List<Materia>
         {
-            CrearMateriaAprobada("Matematicas I",  "MAT1", nota: 4m),
-            CrearMateriaAprobada("Fisica I",       "FIS1", nota: 7m),
-            CrearMateriaAprobada("Programacion I", "PRG1", nota: 8m),
+            CrearMateriaAprobada("Matematicas I",  "MAT1", nota: 4),
+            CrearMateriaAprobada("Fisica I",       "FIS1", nota: 7),
+            CrearMateriaAprobada("Programacion I", "PRG1", nota: 8),
             CrearMateria("Matematicas II", "MAT2", EstadoMateria.Pendiente),
             CrearMateria("Fisica II",      "FIS2", EstadoMateria.Cursando),
         };
 
-        _repository.GetAllAsync(Arg.Any<CancellationToken>())
+        _repository.GetAllWithRegistroNotasAsync(Arg.Any<CancellationToken>())
                    .Returns(materias.AsReadOnly());
 
-        // Act
         var result = await _sut.Handle(new CalcularProgresoQuery(), CancellationToken.None);
 
-        // Assert — totales
         result.TotalMaterias.Should().Be(5);
         result.MateriasAprobadas.Should().Be(3);
         result.PorcentajeProgreso.Should().Be(60.00m);
 
-        // Assert — promedios: (4+7+8)/3 = 6.3333 → round(2) = 6.33
+        // (4+7+8)/3 = 6.3333 → round(2) = 6.33
         result.PromedioSinAplazos.Should().Be(6.33m);
-        result.PromedioConAplazos.Should().Be(6.33m); // Sin notas registradas en no-aprobadas
+        result.PromedioConAplazos.Should().Be(6.33m);
     }
 
     [Fact]
     public async Task Handle_SinMaterias_RetornaTodoEnCero()
     {
-        // Arrange
-        _repository.GetAllAsync(Arg.Any<CancellationToken>())
+        _repository.GetAllWithRegistroNotasAsync(Arg.Any<CancellationToken>())
                    .Returns(Array.Empty<Materia>().ToList().AsReadOnly());
 
-        // Act
         var result = await _sut.Handle(new CalcularProgresoQuery(), CancellationToken.None);
 
-        // Assert
         result.TotalMaterias.Should().Be(0);
         result.MateriasAprobadas.Should().Be(0);
         result.PorcentajeProgreso.Should().Be(0m);
@@ -68,24 +63,21 @@ public sealed class CalcularProgresoHandlerTests
     [Fact]
     public async Task Handle_ConAplazoRegistrado_PromedioConAplazosMenorQueSinAplazos()
     {
-        // Arrange: nota 2 en una materia Regular (aplazo registrado) + nota 8 en una aprobada
+        // nota 2 en materia Regular (aplazo) + nota 8 en aprobada
         var materias = new List<Materia>
         {
-            CrearMateriaConNota("Quimica I", "QUI1", EstadoMateria.Regular, nota: 2m),
-            CrearMateriaAprobada("Programacion I", "PRG1", nota: 8m),
+            CrearMateriaConNota("Quimica I",      "QUI1", EstadoMateria.Regular,  nota: 2),
+            CrearMateriaAprobada("Programacion I","PRG1", nota: 8),
         };
 
-        _repository.GetAllAsync(Arg.Any<CancellationToken>())
+        _repository.GetAllWithRegistroNotasAsync(Arg.Any<CancellationToken>())
                    .Returns(materias.AsReadOnly());
 
-        // Act
         var result = await _sut.Handle(new CalcularProgresoQuery(), CancellationToken.None);
 
-        // Assert
         result.MateriasAprobadas.Should().Be(1);
-        result.PromedioSinAplazos.Should().Be(8.00m);  // Solo nota de aprobada: 8/1
-        result.PromedioConAplazos.Should().Be(5.00m);  // Todas las notas: (2+8)/2
-
+        result.PromedioSinAplazos.Should().Be(8.00m);  // solo nota aprobada: 8/1
+        result.PromedioConAplazos.Should().Be(5.00m);  // todas: (2+8)/2
         result.PromedioConAplazos.Should().BeLessThan(result.PromedioSinAplazos);
     }
 
@@ -97,29 +89,27 @@ public sealed class CalcularProgresoHandlerTests
     public async Task Handle_PorcentajeProgreso_CalculaCorrectamente(
         int cantAprobadas, int cantTotal, decimal porcentajeEsperado)
     {
-        // Arrange
         var materias = Enumerable.Range(0, cantTotal)
-            .Select((i) => i < cantAprobadas
-                ? CrearMateriaAprobada($"Materia {i}", $"M{i:D3}", nota: 6m)
+            .Select(i => i < cantAprobadas
+                ? CrearMateriaAprobada($"Materia {i}", $"M{i:D3}", nota: 6)
                 : CrearMateria($"Materia {i}", $"M{i:D3}", EstadoMateria.Pendiente))
             .ToList();
 
-        _repository.GetAllAsync(Arg.Any<CancellationToken>())
+        _repository.GetAllWithRegistroNotasAsync(Arg.Any<CancellationToken>())
                    .Returns(materias.AsReadOnly());
 
-        // Act
         var result = await _sut.Handle(new CalcularProgresoQuery(), CancellationToken.None);
 
-        // Assert
         result.PorcentajeProgreso.Should().Be(porcentajeEsperado);
     }
 
     #region Helpers
 
-    private static Materia CrearMateriaAprobada(string nombre, string codigo, decimal nota)
+    private static Materia CrearMateriaAprobada(string nombre, string codigo, int nota)
     {
         var m = Materia.Crear(nombre, codigo, cuatrimestre: 1);
-        m.ActualizarEstado(EstadoMateria.Aprobada, nota);
+        m.AgregarNota(nota, new DateOnly(2026, 1, 1), TipoNota.ExamenFinal);
+        m.ActualizarEstado(EstadoMateria.Aprobada);
         return m;
     }
 
@@ -131,10 +121,11 @@ public sealed class CalcularProgresoHandlerTests
         return m;
     }
 
-    private static Materia CrearMateriaConNota(string nombre, string codigo, EstadoMateria estado, decimal nota)
+    private static Materia CrearMateriaConNota(string nombre, string codigo, EstadoMateria estado, int nota)
     {
         var m = Materia.Crear(nombre, codigo, cuatrimestre: 1);
-        m.ActualizarEstado(estado, nota);
+        m.AgregarNota(nota, new DateOnly(2026, 1, 1), TipoNota.ExamenFinal);
+        m.ActualizarEstado(estado);
         return m;
     }
 

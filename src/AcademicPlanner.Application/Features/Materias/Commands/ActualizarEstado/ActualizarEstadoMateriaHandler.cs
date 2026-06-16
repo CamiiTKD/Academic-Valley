@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AcademicPlanner.Application.Features.Materias.Commands.ActualizarEstado;
 
-internal sealed class ActualizarEstadoMateriaHandler(
+public sealed class ActualizarEstadoMateriaHandler(
     IMateriaRepository materiaRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<ActualizarEstadoMateriaCommand>
 {
