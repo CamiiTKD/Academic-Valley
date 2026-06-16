@@ -5,6 +5,7 @@ namespace AcademicPlanner.Application.Common.Interfaces;
 public interface IMateriaRepository
 {
     Task<Materia?> GetByIdAsync(Guid id, CancellationToken ct = default);
+    Task<Materia?> GetByIdWithNotasAsync(Guid id, CancellationToken ct = default);
     Task<Materia?> GetByIdWithCorrelativasAsync(Guid id, CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetAllAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Materia>> GetAllWithCorrelativasAsync(CancellationToken ct = default);

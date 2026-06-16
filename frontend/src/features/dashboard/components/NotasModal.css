@@ -16,8 +16,8 @@
 @keyframes notasFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .notas-modal {
-  width: min(520px, 96vw);
-  max-height: 82vh;
+  width: min(640px, 96vw);
+  max-height: 88vh;
   animation: notasSlide 0.14s ease-out;
 }
 @keyframes notasSlide {
@@ -30,7 +30,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 10px 16px 8px;
+  padding: 13px 20px 10px;
   border-bottom: 3px solid var(--color-wood-dark);
   background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%);
   flex-shrink: 0;
@@ -40,19 +40,20 @@
 .notas-header-left {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 
 .notas-title {
-  font-size: 1.6rem;
+  font-size: 2rem;
   color: var(--color-accent-gold);
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.9);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.9), 2px 2px 0 rgba(0,0,0,0.35);
   line-height: 1;
+  letter-spacing: 1px;
 }
 
 .notas-materia-nombre {
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: var(--color-parchment);
   opacity: 0.75;
   overflow: hidden;
@@ -65,9 +66,9 @@
   border: 2px solid #000;
   color: var(--color-text-light);
   font-family: var(--font-pixel);
-  font-size: 1.3rem;
-  width: 32px;
-  height: 32px;
+  font-size: 1.4rem;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,14 +89,14 @@
   overflow-y: auto;
   background: #0a0502;
   min-height: 80px;
-  max-height: 280px;
+  max-height: 320px;
 }
 
 .notas-vacio {
   text-align: center;
   color: rgba(255,255,255,0.35);
-  font-size: 1.1rem;
-  padding: 28px 20px;
+  font-size: 1.2rem;
+  padding: 32px 20px;
   letter-spacing: 1px;
 }
 
@@ -106,8 +107,8 @@
 
 .notas-cabecera {
   display: grid;
-  grid-template-columns: 100px 1fr 70px;
-  padding: 5px 14px;
+  grid-template-columns: 120px 1fr 80px;
+  padding: 6px 18px;
   background: #1c0e04;
   border-bottom: 2px solid var(--color-wood-dark);
   position: sticky;
@@ -115,7 +116,7 @@
   z-index: 1;
 }
 .notas-cabecera span {
-  font-size: 0.88rem;
+  font-size: 1rem;
   color: var(--color-accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -123,9 +124,9 @@
 
 .nota-row {
   display: grid;
-  grid-template-columns: 100px 1fr 70px;
+  grid-template-columns: 120px 1fr 80px;
   align-items: center;
-  padding: 6px 14px;
+  padding: 10px 18px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: background 0.07s;
 }
@@ -145,16 +146,16 @@
 }
 
 .nota-fecha {
-  font-size: 1rem;
+  font-size: 1.15rem;
   color: var(--color-parchment-dark);
 }
 .nota-tipo {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--color-parchment);
   opacity: 0.8;
 }
 .nota-valor {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
   display: flex;
@@ -166,7 +167,7 @@
 .nota-row--aplazo   .nota-valor { color: #ff5040; }
 
 .nota-aplazo-mark {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #ff4535;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.9);
   flex-shrink: 0;
@@ -174,17 +175,32 @@
 
 /* ─── Footer form ─────────────────────────────────────── */
 .notas-footer {
-  padding: 10px 14px 12px;
+  padding: 13px 18px 16px;
   background: #0a0502;
   border-top: 3px solid var(--color-wood-dark);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+/* ─── Aviso materia aprobada ──────────────────────────── */
+.notas-aprobada-aviso {
+  font-family: var(--font-pixel);
+  font-size: 1.2rem;
+  color: #60e050;
+  background: rgba(40, 80, 32, 0.3);
+  border: 2px solid #285020;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  padding: 10px 16px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+  image-rendering: pixelated;
 }
 
 .notas-form-title {
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   color: var(--color-accent-gold);
   letter-spacing: 1px;
 }
@@ -192,12 +208,12 @@
 .notas-form {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .notas-form-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: flex-end;
   flex-wrap: wrap;
 }
@@ -205,11 +221,11 @@
 .notas-form-field {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .notas-form-label {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--color-parchment-dark);
   letter-spacing: 0.5px;
 }
@@ -217,40 +233,42 @@
 .notas-form-input,
 .notas-form-select {
   font-family: var(--font-pixel);
-  font-size: 1rem;
+  font-size: 1.15rem;
   background: #180c04;
   color: var(--color-text-light);
-  border: 2px solid var(--color-wood-mid);
-  padding: 4px 8px;
+  border: 3px solid var(--color-wood-dark);
+  padding: 8px 12px;
   outline: none;
-  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.5);
-  height: 32px;
+  box-shadow:
+    inset 3px 3px 0 rgba(0,0,0,0.5),
+    inset -1px -1px 0 rgba(255,255,255,0.06);
+  image-rendering: pixelated;
+  transition: border-color 0.1s;
 }
 .notas-form-input:focus,
 .notas-form-select:focus {
   border-color: var(--color-accent-gold);
 }
-.notas-form-input--num { width: 72px; }
-.notas-form-select     { min-width: 130px; }
+.notas-form-input--num { width: 90px; }
+.notas-form-select     { min-width: 160px; cursor: pointer; }
 
 .notas-form-btn {
   font-family: var(--font-pixel);
-  font-size: 1rem;
-  background: #285020;
-  color: #90ff70;
-  border: 2px solid #407830;
-  padding: 4px 14px 5px;
-  box-shadow: 2px 2px 0 #000;
+  font-size: 1.3rem;
+  background: linear-gradient(180deg, #5abf4a 0%, #2d7a22 100%);
+  color: white;
+  border: 3px solid #1a4a12;
+  padding: 9px 20px 10px;
+  box-shadow: 0 4px 0 #1a4a12, inset 0 1px 0 rgba(255,255,255,0.22);
   cursor: pointer;
-  height: 32px;
   white-space: nowrap;
-  transition: transform 0.08s, box-shadow 0.08s, background 0.08s;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  transition: transform 0.08s, box-shadow 0.08s;
   align-self: flex-end;
 }
 .notas-form-btn:hover:not(:disabled) {
-  background: #3a7030;
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 #000;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #1a4a12, inset 0 1px 0 rgba(255,255,255,0.22);
 }
 .notas-form-btn:disabled,
 .notas-form-btn--loading {
@@ -259,7 +277,7 @@
 }
 
 .notas-form-error {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #ff9080;
   margin: 0;
 }

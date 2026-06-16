@@ -51,6 +51,10 @@ export default function NotasModal({ materia, onClose, onNotaAdded }) {
     String(b.fecha).localeCompare(String(a.fecha))
   );
 
+  const yaAprobada = (materia.registroNotas ?? []).some(
+    n => n.tipo === 'ExamenFinal' && n.valorNota >= 4
+  );
+
   return (
     <div className="notas-overlay" onClick={handleOverlayClick}>
       <div className="notas-modal">
@@ -95,54 +99,62 @@ export default function NotasModal({ materia, onClose, onNotaAdded }) {
 
           {/* ── Formulario agregar nota ── */}
           <div className="notas-footer">
-            <span className="notas-form-title">+ Agregar nota</span>
-            <form className="notas-form" onSubmit={handleAgregar}>
-              <div className="notas-form-row">
-                <div className="notas-form-field">
-                  <label className="notas-form-label">Nota (1–10)</label>
-                  <input
-                    className="notas-form-input notas-form-input--num"
-                    type="number"
-                    min={1} max={10} step={1}
-                    value={valor}
-                    onChange={e => { setValor(e.target.value); setError(null); }}
-                    placeholder="Ej: 7"
-                    disabled={loading}
-                  />
-                </div>
-                <div className="notas-form-field">
-                  <label className="notas-form-label">Tipo</label>
-                  <select
-                    className="notas-form-select"
-                    value={tipo}
-                    onChange={e => setTipo(e.target.value)}
-                    disabled={loading}
-                  >
-                    <option value="ExamenFinal">Examen Final</option>
-                    <option value="Promocion">Promoción</option>
-                  </select>
-                </div>
-                <div className="notas-form-field">
-                  <label className="notas-form-label">Fecha</label>
-                  <input
-                    className="notas-form-input"
-                    type="date"
-                    max={HOY}
-                    value={fecha}
-                    onChange={e => { setFecha(e.target.value); setError(null); }}
-                    disabled={loading}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className={`notas-form-btn${loading ? ' notas-form-btn--loading' : ''}`}
-                  disabled={loading || !valor}
-                >
-                  {loading ? '...' : '✓ Guardar'}
-                </button>
+            {yaAprobada ? (
+              <div className="notas-aprobada-aviso">
+                ✓ Materia aprobada. No se admiten más registros.
               </div>
-              {error && <p className="notas-form-error">⚠ {error}</p>}
-            </form>
+            ) : (
+              <>
+                <span className="notas-form-title">+ Agregar nota</span>
+                <form className="notas-form" onSubmit={handleAgregar}>
+                  <div className="notas-form-row">
+                    <div className="notas-form-field">
+                      <label className="notas-form-label">Nota (1–10)</label>
+                      <input
+                        className="notas-form-input notas-form-input--num"
+                        type="number"
+                        min={1} max={10} step={1}
+                        value={valor}
+                        onChange={e => { setValor(e.target.value); setError(null); }}
+                        placeholder="Ej: 7"
+                        disabled={loading}
+                      />
+                    </div>
+                    <div className="notas-form-field">
+                      <label className="notas-form-label">Tipo</label>
+                      <select
+                        className="notas-form-select"
+                        value={tipo}
+                        onChange={e => setTipo(e.target.value)}
+                        disabled={loading}
+                      >
+                        <option value="ExamenFinal">Examen Final</option>
+                        <option value="Promocion">Promoción</option>
+                      </select>
+                    </div>
+                    <div className="notas-form-field">
+                      <label className="notas-form-label">Fecha</label>
+                      <input
+                        className="notas-form-input"
+                        type="date"
+                        max={HOY}
+                        value={fecha}
+                        onChange={e => { setFecha(e.target.value); setError(null); }}
+                        disabled={loading}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className={`notas-form-btn${loading ? ' notas-form-btn--loading' : ''}`}
+                      disabled={loading || !valor}
+                    >
+                      {loading ? '...' : '✓ Guardar'}
+                    </button>
+                  </div>
+                  {error && <p className="notas-form-error">⚠ {error}</p>}
+                </form>
+              </>
+            )}
           </div>
 
         </WoodPanel>

@@ -16,8 +16,8 @@
 @keyframes agendaFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .agenda-modal {
-  width: min(1140px, 98vw);
-  max-height: 88vh;
+  width: min(1340px, 98vw);
+  max-height: 92vh;
   animation: agendaSlide 0.16s ease-out;
 }
 @keyframes agendaSlide {
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 18px 8px;
+  padding: 13px 22px 11px;
   border-bottom: 3px solid var(--color-wood-dark);
   background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%);
   flex-shrink: 0;
@@ -44,7 +44,7 @@
 }
 
 .agenda-title {
-  font-size: 1.9rem;
+  font-size: 2.3rem;
   color: var(--color-accent-gold);
   text-shadow: 1px 1px 0 rgba(0,0,0,0.9), 2px 2px 0 rgba(0,0,0,0.4);
   letter-spacing: 1px;
@@ -52,7 +52,7 @@
 }
 
 .agenda-semana {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--color-parchment);
   opacity: 0.65;
   letter-spacing: 0.5px;
@@ -129,8 +129,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 8px 6px 7px;
+  gap: 4px;
+  padding: 11px 8px 9px;
   background: #1c0d04;
   border-bottom: 3px solid var(--color-wood-dark);
   position: sticky;
@@ -145,7 +145,7 @@
 }
 
 .agenda-dia-nombre {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: var(--color-parchment);
   letter-spacing: 1px;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.9);
@@ -188,16 +188,23 @@
 /* ─── Horario block (class card) ──────────────────────── */
 .agenda-bloque {
   background: #e4d498;
-  border: 2px solid var(--color-parchment-border);
-  border-left: 4px solid var(--color-wood-mid);
-  padding: 6px 8px;
+  border: 2px solid #4a2e1b;
+  border-left: 4px solid var(--color-wood-dark);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.45);
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  transition: background 0.1s, border-color 0.1s;
+}
+.agenda-bloque:hover {
+  background: #f2e6b0;
+  border-color: #3a2010;
+  border-left-color: var(--color-wood-mid);
 }
 
 .agenda-bloque-time {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--color-wood-dark);
   letter-spacing: 0.5px;
   font-weight: bold;
@@ -205,15 +212,15 @@
 }
 
 .agenda-bloque-nombre {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   color: var(--color-text-dark);
   line-height: 1.25;
 }
 
 .agenda-bloque-tag {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--color-wood-mid);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 .agenda-bloque-tag--virtual { color: #4888d0; }
 
@@ -222,12 +229,17 @@
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 5px;
+  gap: 6px;
   background: rgba(192, 32, 18, 0.16);
-  border: 2px solid rgba(200, 48, 32, 0.55);
+  border: 2px solid rgba(200, 48, 32, 0.8);
   border-left: 4px solid var(--color-accent-red);
-  padding: 5px 7px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.45);
+  padding: 7px 9px;
   cursor: default;
+  transition: background 0.1s;
+}
+.agenda-alerta:hover {
+  background: rgba(192, 32, 18, 0.28);
 }
 
 .agenda-alerta-icon {
@@ -248,24 +260,24 @@
 }
 
 .agenda-alerta-tipo {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   color: #ff9080;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 .agenda-alerta-nombre {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--color-text-light);
   line-height: 1.2;
 }
 .agenda-alerta-desc {
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: var(--color-parchment-dark);
 }
 .agenda-alerta-fecha {
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: #ffaa90;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 /* Tooltip (CSS-only, shows on hover) */
@@ -291,24 +303,24 @@
 
 /* ─── Footer: stamina bar ─────────────────────────────── */
 .agenda-footer {
-  padding: 10px 18px 13px;
+  padding: 12px 22px 16px;
   background: #0a0502;
   border-top: 3px solid var(--color-wood-dark);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 9px;
 }
 
 .agenda-stamina-label-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
 .agenda-stamina-title {
-  font-size: 1.2rem;
+  font-size: 1.45rem;
   color: var(--color-text-light);
   text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
   white-space: nowrap;
@@ -316,7 +328,7 @@
 
 .agenda-stamina-msg {
   flex: 1;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   text-align: center;
   min-width: 0;
 }
@@ -329,7 +341,7 @@
 @keyframes staminaWarn { from { opacity: 0.7; } to { opacity: 1; } }
 
 .agenda-stamina-horas {
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   color: var(--color-parchment-dark);
   white-space: nowrap;
 }
@@ -338,7 +350,7 @@
 .agenda-stamina-track {
   position: relative;
   width: 100%;
-  height: 26px;
+  height: 36px;
   background: var(--color-wood-dark);
   border: 3px solid #180900;
   box-shadow:
@@ -398,7 +410,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: white;
   text-shadow:
     1px 1px 0 rgba(0,0,0,0.9), -1px -1px 0 rgba(0,0,0,0.9),

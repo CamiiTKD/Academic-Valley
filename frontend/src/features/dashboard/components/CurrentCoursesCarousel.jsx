@@ -3,7 +3,7 @@ import './CurrentCoursesCarousel.css';
 
 function MateriaCard({ materia, isActive, onClick }) {
   const cuatLabel = materia.cuatrimestre
-    ? `${materia.anio ?? ''}° Año · ${materia.cuatrimestre}° Cuat.`
+    ? `${materia.cuatrimestre}° Cuat.`
     : '';
 
   return (

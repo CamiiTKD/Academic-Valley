@@ -87,7 +87,7 @@ export default function CarteleraModal({ materias, loading, onClose, onEdit, onN
                         </span>
                         <span className="col-notas">
                           <button
-                            className={`notas-row-btn${tieneAplazo ? ' notas-row-btn--aplazo' : ''}`}
+                            className={`notas-row-btn${tieneAplazo ? ' notas-row-btn--aplazo' : m.estado === 'Aprobada' ? ' notas-row-btn--aprobada' : ''}`}
                             title="Ver historial de notas"
                             onClick={() => setNotasMateria(m)}
                           >

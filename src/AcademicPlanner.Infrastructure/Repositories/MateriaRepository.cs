@@ -13,6 +13,11 @@ internal sealed class MateriaRepository(AcademicPlannerDbContext context) : IMat
             .Include(m => m.Evaluaciones)
             .FirstOrDefaultAsync(m => m.Id == id, ct);
 
+    public async Task<Materia?> GetByIdWithNotasAsync(Guid id, CancellationToken ct = default)
+        => await context.Materias
+            .Include(m => m.RegistroNotas)
+            .FirstOrDefaultAsync(m => m.Id == id, ct);
+
     public async Task<Materia?> GetByIdWithCorrelativasAsync(Guid id, CancellationToken ct = default)
         => await context.Materias
             .Include(m => m.Correlativas)

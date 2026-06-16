@@ -15,8 +15,8 @@
 }
 
 .detail-panel {
-  width: min(780px, 92vw);
-  max-height: 82vh;
+  width: min(960px, 93vw);
+  max-height: 88vh;
   display: flex;
   flex-direction: column;
   animation: unfurl 0.2s ease-out;
@@ -79,25 +79,25 @@
 }
 
 .detail-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: var(--color-wood-dark);
   line-height: 1;
   text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
 }
 
 .detail-code {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--color-wood-mid);
-  margin-left: 12px;
+  margin-left: 14px;
 }
 
 .detail-close-btn {
   background: var(--color-wood-mid);
   border: 3px solid var(--color-wood-dark);
   color: var(--color-text-light);
-  font-size: 1.6rem;
-  width: 36px;
-  height: 36px;
+  font-size: 1.8rem;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,11 +132,11 @@
 
 .section-add-btn {
   font-family: var(--font-pixel);
-  font-size: 1rem;
+  font-size: 1.2rem;
   background: var(--color-wood-mid);
   color: var(--color-text-light);
   border: 2px solid var(--color-wood-dark);
-  padding: 2px 10px 3px;
+  padding: 5px 14px 6px;
   box-shadow: 2px 2px 0 var(--color-wood-dark);
   cursor: pointer;
   white-space: nowrap;
@@ -259,7 +259,7 @@
 }
 
 .detail-section-title {
-  font-size: 1.4rem;
+  font-size: 1.75rem;
   color: var(--color-wood-dark);
   border-bottom: 2px solid var(--color-parchment-border);
   padding-bottom: 4px;
@@ -286,37 +286,39 @@
   gap: 10px;
   background: linear-gradient(90deg, #e8d9a8, var(--color-parchment));
   border: 2px solid var(--color-parchment-border);
-  padding: 6px 12px;
-  font-size: 1.2rem;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.18);
+  padding: 10px 16px;
+  font-size: 1.4rem;
+  image-rendering: pixelated;
 }
 
 .horario-dia {
   background: var(--color-wood-mid);
   color: var(--color-text-light);
-  padding: 2px 8px;
+  padding: 3px 12px;
   border: 2px solid var(--color-wood-dark);
-  min-width: 90px;
+  min-width: 110px;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .horario-horas {
   color: var(--color-wood-dark);
-  font-size: 1.25rem;
+  font-size: 1.45rem;
 }
 
 .horario-aula {
   margin-left: auto;
   color: var(--color-wood-mid);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .horario-virtual-badge {
   background: #4080c0;
   color: white;
-  padding: 1px 6px;
+  padding: 2px 8px;
   border: 2px solid #204080;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 /* Evaluaciones */
@@ -332,17 +334,19 @@
   gap: 10px;
   background: var(--color-parchment);
   border: 2px solid var(--color-parchment-border);
-  padding: 6px 12px;
-  font-size: 1.15rem;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.18);
+  padding: 10px 16px;
+  font-size: 1.35rem;
+  image-rendering: pixelated;
 }
 
 .evaluacion-tipo {
   background: var(--color-wood-dark);
   color: var(--color-accent-gold);
-  padding: 2px 8px;
+  padding: 3px 10px;
   border: 2px solid var(--color-wood-light);
-  font-size: 1rem;
-  min-width: 80px;
+  font-size: 1.2rem;
+  min-width: 90px;
   text-align: center;
 }
 
@@ -353,15 +357,15 @@
 
 .evaluacion-fecha {
   color: var(--color-wood-mid);
-  font-size: 1.05rem;
+  font-size: 1.25rem;
 }
 
 .evaluacion-nota {
   background: var(--color-green-stamina-dark);
   color: white;
-  padding: 1px 8px;
+  padding: 2px 10px;
   border: 2px solid var(--color-green-stamina-dark);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .evaluacion-nota--pendiente {
@@ -371,9 +375,9 @@
 
 .empty-state {
   color: var(--color-wood-mid);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-style: italic;
-  padding: 8px 0;
+  padding: 10px 0;
 }
 
 .loading-text {
